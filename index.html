@@ -40,9 +40,33 @@
 
       --font-display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --theme-transition: background .3s, color .3s, border-color .3s, box-shadow .3s;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       DARK MODE TOKENS
+       ════════════════════════════════════════════════════════ */
+    html.dark {
+      --cream: #1a1410;
+      --cream-warm: #221c16;
+      --paper: #211b14;
+      --ink: #f0e8d8;
+      --ink-soft: #b8a898;
+      --ink-mute: #7a6a5a;
+
+      --line: #3a3028;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+      --shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 16px 40px -8px rgba(0, 0, 0, .4);
+      --shadow-lg: 0 4px 8px rgba(0, 0, 0, .3), 0 32px 64px -12px rgba(0, 0, 0, .5);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    .form-card, .key-panel, textarea, .pill, .card, .drawer,
+    .nav-fav, .theme-btn, .btn-ghost, .fav-item, .insp-card,
+    input, .parent-input, .combine-extra, footer, nav {
+      transition: background-color .3s, border-color .3s, color .2s, box-shadow .3s;
+    }
 
     html, body {
       background: var(--cream);
@@ -53,6 +77,42 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
+      transition: var(--theme-transition);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       THEME TOGGLE BUTTON
+       ════════════════════════════════════════════════════════ */
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      font-family: var(--font-body);
+      transition: all .25s;
+      white-space: nowrap;
+    }
+    .theme-btn:hover {
+      border-color: var(--coral);
+      color: var(--ink);
+      background: var(--cream-warm);
+      transform: translateY(-1px);
+    }
+    .theme-btn .theme-icon {
+      font-size: 15px;
+      line-height: 1;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     /* ════════════════════════════════════════════════════════
@@ -1078,6 +1138,126 @@
     }
 
     /* ════════════════════════════════════════════════════════
+       TILT 3D — tarjetas
+       ════════════════════════════════════════════════════════ */
+    .card {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .card.tilt-active {
+      /* Sin transición mientras el ratón mueve — respuesta inmediata */
+      transition: box-shadow .3s, border-color .3s !important;
+    }
+    .card.tilt-leave {
+      /* Transición suave al volver a la posición original */
+      transition: transform .4s cubic-bezier(.2, .8, .2, 1), box-shadow .3s, border-color .3s !important;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       ORIGEN COLORS — acento sutil por cultura
+       ════════════════════════════════════════════════════════ */
+    .card[data-culture="japones"]  { --card-accent: rgba(255, 120, 130, .1); --card-border: rgba(255, 120, 130, .35); }
+    .card[data-culture="italiano"] { --card-accent: rgba(100, 160, 100, .1); --card-border: rgba(100, 160, 100, .35); }
+    .card[data-culture="hebreo"]   { --card-accent: rgba(200, 160, 80,  .1); --card-border: rgba(200, 160, 80,  .35); }
+    .card[data-culture="griego"]   { --card-accent: rgba(80,  140, 210, .1); --card-border: rgba(80,  140, 210, .35); }
+    .card[data-culture="arabe"]    { --card-accent: rgba(180, 110, 60,  .1); --card-border: rgba(180, 110, 60,  .35); }
+    .card[data-culture="nordico"]  { --card-accent: rgba(80,  180, 200, .1); --card-border: rgba(80,  180, 200, .35); }
+    .card[data-culture="latino"]   { --card-accent: rgba(220, 100, 80,  .1); --card-border: rgba(220, 100, 80,  .35); }
+    .card[data-culture="celta"]    { --card-accent: rgba(100, 180, 120, .1); --card-border: rgba(100, 180, 120, .35); }
+    .card[data-culture="persa"]    { --card-accent: rgba(160, 100, 200, .1); --card-border: rgba(160, 100, 200, .35); }
+
+    .card[data-culture] {
+      border-color: var(--card-border, rgba(224, 211, 184, .6));
+    }
+    .card[data-culture]::after {
+      background: linear-gradient(135deg, var(--card-accent, rgba(255, 200, 168, .12)), transparent 50%);
+    }
+    .card[data-culture]:hover {
+      border-color: var(--card-border, var(--coral));
+    }
+
+    /* badge de origen coloreado */
+    .card[data-culture="japones"]  .card-origin { background: rgba(255, 120, 130, .15); color: #c0404a; }
+    .card[data-culture="italiano"] .card-origin { background: rgba(100, 160, 100, .18); color: #3a7a3a; }
+    .card[data-culture="hebreo"]   .card-origin { background: rgba(200, 160, 80,  .18); color: #8a6010; }
+    .card[data-culture="griego"]   .card-origin { background: rgba(80,  140, 210, .15); color: #2050a0; }
+    .card[data-culture="arabe"]    .card-origin { background: rgba(180, 110, 60,  .15); color: #904820; }
+    .card[data-culture="nordico"]  .card-origin { background: rgba(80,  180, 200, .15); color: #207090; }
+    .card[data-culture="latino"]   .card-origin { background: rgba(220, 100, 80,  .15); color: #a03020; }
+    .card[data-culture="celta"]    .card-origin { background: rgba(100, 180, 120, .18); color: #30703a; }
+    .card[data-culture="persa"]    .card-origin { background: rgba(160, 100, 200, .15); color: #703090; }
+
+    /* ════════════════════════════════════════════════════════
+       PRONUNCIACIÓN — botón de audio
+       ════════════════════════════════════════════════════════ */
+    .icon-btn.speak-btn { font-size: 13px; }
+    .icon-btn.speak-btn.speaking {
+      color: var(--coral-deep);
+      background: rgba(194, 80, 52, .1);
+      animation: pulse-speak .6s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-speak {
+      from { transform: scale(1); }
+      to   { transform: scale(1.15); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       SKELETON LOADERS
+       ════════════════════════════════════════════════════════ */
+    .skeleton-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 80px;
+    }
+    .skeleton-card {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px 24px;
+      border: 1px solid rgba(224, 211, 184, .4);
+      overflow: hidden;
+    }
+    .skel {
+      background: linear-gradient(90deg,
+        var(--cream-warm) 25%,
+        var(--cream) 50%,
+        var(--cream-warm) 75%
+      );
+      background-size: 200% 100%;
+      border-radius: 6px;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .skel-num   { height: 12px; width: 40px; margin-bottom: 16px; }
+    .skel-name  { height: 40px; width: 70%; margin-bottom: 14px; border-radius: 8px; }
+    .skel-badge { height: 18px; width: 80px; border-radius: 100px; margin-bottom: 16px; }
+    .skel-line  { height: 12px; width: 100%; margin-bottom: 8px; }
+    .skel-line.short { width: 65%; }
+    .skel-div   { height: 1px; background: var(--line); margin: 14px 0; }
+    .skel-reason{ height: 10px; width: 90%; }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       LOADING PHRASE
+       ════════════════════════════════════════════════════════ */
+    .loading-phrase {
+      text-align: center;
+      margin-top: 20px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--ink-mute);
+      min-height: 1.5em;
+      animation: fade-phrase .5s ease;
+    }
+    @keyframes fade-phrase {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ════════════════════════════════════════════════════════
        MOBILE
        ════════════════════════════════════════════════════════ */
     @media (max-width: 720px) {
@@ -1111,11 +1291,17 @@
         <span class="logo-mark">L</span>
         <span>Lumen</span>
       </div>
-      <button class="nav-fav" id="openFav">
-        <span class="heart">♥</span>
-        <span>Favoritos</span>
-        <span class="nav-fav-count" id="favCount">0</span>
-      </button>
+      <div class="nav-right">
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Cambiar tema">
+          <span class="theme-icon" id="themeIcon">☾</span>
+          <span id="themeLabel">Oscuro</span>
+        </button>
+        <button class="nav-fav" id="openFav">
+          <span class="heart">♥</span>
+          <span>Favoritos</span>
+          <span class="nav-fav-count" id="favCount">0</span>
+        </button>
+      </div>
     </nav>
 
     <!-- ═══════════ HERO ═══════════ -->
@@ -1306,6 +1492,12 @@
       </div>
     </section>
 
+    <!-- ═══════════ SKELETON (visible mientras carga) ═══════════ -->
+    <div class="skeleton-grid" id="skeletonGrid" style="display:none">
+      <!-- se genera por JS -->
+    </div>
+    <p class="loading-phrase" id="loadingPhrase" style="display:none"></p>
+
     <!-- ═══════════ RESULTS ═══════════ -->
     <section class="results-wrap" id="resultsWrap">
       <div class="results-header">
@@ -1351,15 +1543,28 @@
     const FAVS_KEY = 'lumen_favorites';
 
     // Prompt del sistema: instrucciones para forzar JSON estructurado
-    const SYSTEM_PROMPT = `Eres un experto en onomástica (estudio de los nombres propios) con conocimiento profundo de etimología, idiomas y culturas del mundo.
+    const SYSTEM_PROMPT = `Eres un experto en onomástica y naming con más de 20 años de experiencia, especializado en seleccionar nombres de bebé que sean a la vez bellos, memorables y con significado real.
 
-Tu tarea es generar EXACTAMENTE 10 nombres de bebé únicos que cumplan TODOS los criterios solicitados por el usuario (idioma, género, longitud, letra inicial, significado, origen, etc.).
+Tu tarea es generar EXACTAMENTE 10 nombres de bebé que cumplan los criterios del usuario Y que pasen un filtro de calidad exigente.
+
+FILTRO DE CALIDAD OBLIGATORIO — cada nombre debe superar TODAS estas pruebas:
+1. SONORIDAD: El nombre suena bien en voz alta. Tiene una cadencia agradable, sin choques consonánticos duros ni combinaciones incómodas.
+2. MEMORABILIDAD: Es fácil de recordar y de deletrear la primera vez que se escucha.
+3. AUTENTICIDAD: Es un nombre real, documentado o ampliamente usado en su cultura de origen — no un invento forzado.
+4. SIGNIFICADO: Tiene un significado concreto y positivo (o al menos neutro). Evita nombres cuyo significado sea oscuro, negativo o trivial.
+5. PRUEBA DEL PATIO: El nombre funciona tanto para un niño pequeño como para un adulto profesional.
+
+CRITERIOS DE DIVERSIDAD — los 10 nombres en conjunto deben:
+- Provenir de al menos 3 orígenes culturales o lingüísticos distintos (a menos que el usuario pida específicamente un solo origen).
+- Variar en longitud: mezcla nombres cortos (1-2 sílabas), medios (3 sílabas) y alguno largo si cabe.
+- Evitar que todos empiecen por la misma letra.
+- No repetir el mismo patrón fonético (por ejemplo, no todos terminados en -a o todos en -el).
 
 REGLAS ESTRICTAS:
 1. Devuelve EXACTAMENTE 10 nombres, ni más ni menos.
-2. Los 10 nombres deben ser únicos (sin repeticiones).
-3. Cada nombre debe cumplir TODOS los criterios del usuario simultáneamente.
-4. Si la solicitud es ambigua o casi imposible, devuelve la mejor aproximación posible y explícalo en "justificacion".
+2. Respeta TODOS los criterios del usuario (género, inicial, idioma, longitud, estilo…).
+3. Si el usuario pide un origen específico, respeta la diversidad DENTRO de ese origen (dialectos, épocas, regiones).
+4. En "justificacion", explica en 1 línea por qué este nombre es especialmente bueno: menciona su atractivo sonoro, su significado o su relevancia cultural.
 5. Responde SIEMPRE en el mismo idioma en que el usuario escribió su solicitud.
 6. Devuelve únicamente un objeto JSON válido con esta estructura exacta:
 
@@ -1368,8 +1573,8 @@ REGLAS ESTRICTAS:
     {
       "nombre": "string (el nombre propio)",
       "origen": "string (idioma u origen cultural, ej: 'Italiano', 'Hebreo', 'Japonés')",
-      "significado": "string (significado breve, máximo 1 línea)",
-      "justificacion": "string (por qué cumple los criterios solicitados, máximo 1 línea)"
+      "significado": "string (significado concreto, máximo 1 línea)",
+      "justificacion": "string (por qué es un gran nombre: sonido, significado o historia, máximo 1 línea)"
     }
   ]
 }
@@ -1377,36 +1582,39 @@ REGLAS ESTRICTAS:
 No incluyas texto adicional fuera del JSON.`;
 
     // Prompt del sistema para el modo "Combinar nombres de los padres"
-    const SYSTEM_PROMPT_COMBINE = `Eres un experto en onomástica creativa. Tu especialidad es crear nombres de bebé que combinen los nombres de los dos padres de formas elegantes y diversas.
+    const SYSTEM_PROMPT_COMBINE = `Eres un experto en onomástica creativa y naming familiar. Tu especialidad es crear nombres de bebé que honren los nombres de ambos padres de forma elegante — que la conexión se sienta, no que se vea forzada.
 
-Cuando recibas los nombres de la mamá y del papá, debes generar EXACTAMENTE 10 nombres de bebé únicos, usando una variedad de estrategias creativas de combinación. NO uses la misma estrategia para todos los 10 nombres — varíalas.
+PRINCIPIO FUNDAMENTAL: El resultado debe sonar como un nombre real y hermoso, no como una fusión mecánica. Prioriza siempre la calidad sonora sobre la literalidad de la combinación.
 
-ESTRATEGIAS DE COMBINACIÓN (úsalas mezcladas):
-1. **Fusión silábica**: Tomar sílabas de ambos nombres y combinarlas (ej: María + Carlos → "Maricar", "Carme", "Marlos").
-2. **Inicial + final**: Comenzar con sílabas o letras de uno y terminar con las del otro (ej: Lucía + Andrés → "Luan", "Andralí").
-3. **Anagrama creativo**: Reorganizar letras de ambos nombres para formar un nombre real o casi real.
-4. **Nombres reales con sonidos compartidos**: Sugerir nombres que existen y que comparten sílabas o sonidos con ambos padres (ej: si los padres son Ana y Mario, sugerir "Amaro" o "Mariana").
-5. **Significado evocador**: Nombres cuyo significado etimológico se relacione con los significados de los nombres de ambos padres.
-6. **Iniciales compartidas**: Nombres que comiencen con la inicial de uno y contengan letras destacadas del otro.
+FILTRO DE CALIDAD — cada nombre debe cumplir:
+1. SONORIDAD NATURAL: Suena fluido y agradable en voz alta. No tiene combinaciones consonánticas duras ni sílabas que choquen.
+2. CREDIBILIDAD: Podría ser confundido con un nombre real existente en alguna cultura. Evita inventos que suenen artificiales.
+3. IDENTIDAD PROPIA: El bebé lo sentirá como suyo, no como "la mezcla de sus padres". La conexión con los padres es un guiño sutil, no obvio.
+4. SIGNIFICADO: Tiene un significado concreto y positivo en algún idioma o cultura.
+
+ESTRATEGIAS DE COMBINACIÓN — varía entre estas 6 para los 10 resultados:
+1. Fusión silábica elegante: sílabas de ambos que al unirse forman algo que suena a nombre real.
+2. Nombres existentes con resonancia compartida: nombres reales que contienen sonidos de ambos padres (preferida cuando existe una opción así).
+3. Inicial de uno + terminación del otro, cuando el resultado es fluido.
+4. Nombre cuyo significado evoca los significados de ambos padres (conexión semántica, no fonética).
+5. Nombre de la misma familia etimológica que ambos padres (comparten raíz latina, griega, hebrea…).
+6. Nombre de una cultura que "abraza" fonéticamente ambos nombres (ej: un nombre escandinavo que recoge sonidos de ambos).
 
 REGLAS ESTRICTAS:
 1. Devuelve EXACTAMENTE 10 nombres únicos.
-2. Cada nombre debe sonar real, pronunciable, y apropiado como nombre de persona — evita combinaciones forzadas o impronunciables.
-3. Si el usuario especifica género (niño/niña/unisex), todos los nombres deben respetarlo.
-4. Si el usuario especifica preferencias adicionales (idioma, longitud, estilo), respétalas.
-5. En la "justificacion", explica brevemente y con calidez QUÉ ESTRATEGIA se usó y cómo se combinan los nombres de los padres en ese nombre concreto (ej: "Fusiona las sílabas 'Ma-' de María y '-rio' de Mario").
-6. En "origen", indica el origen cultural del nombre resultante.
-7. En "significado", indica el significado del nombre.
-8. Responde SIEMPRE en español.
-9. Devuelve únicamente un objeto JSON válido con esta estructura:
+2. Rechaza cualquier combinación que suene forzada, impronunciable o cómica — si no hay 10 buenas opciones con combinación directa, complementa con nombres que conecten por significado o familia etimológica.
+3. Respeta género si se especifica.
+4. En "justificacion": explica CON CALIDEZ la conexión con los padres Y menciona por qué suena bien (máximo 1 línea).
+5. Responde SIEMPRE en español.
+6. Devuelve únicamente un objeto JSON válido:
 
 {
   "nombres": [
     {
-      "nombre": "string (el nombre combinado)",
-      "origen": "string (origen cultural)",
-      "significado": "string (significado breve)",
-      "justificacion": "string (cómo combina los nombres de los padres)"
+      "nombre": "string",
+      "origen": "string (origen cultural del nombre resultante)",
+      "significado": "string (significado concreto)",
+      "justificacion": "string (conexión con los padres + por qué suena bien)"
     }
   ]
 }
@@ -1582,10 +1790,62 @@ No incluyas texto adicional fuera del JSON.`;
       errorBox.classList.add('show');
     }
     function hideError() { errorBox.classList.remove('show'); }
+    // ════════════════════════════════════════════════════════
+    // LOADING PHRASES
+    // ════════════════════════════════════════════════════════
+    const LOADING_PHRASES = [
+      'Consultando antiguos pergaminos…',
+      'Viajando entre 30 idiomas y culturas…',
+      'Buscando nombres que suenen a magia…',
+      'Evaluando la musicalidad de cada sílaba…',
+      'Revisando etimologías milenarias…',
+      'Eligiendo los más memorables…',
+      'Ajustando la cadencia perfecta…',
+      'Casi listo, los mejores toman su tiempo…',
+    ];
+    let phraseInterval = null;
+
+    function startLoadingPhrases() {
+      const el = $('loadingPhrase');
+      const skelGrid = $('skeletonGrid');
+      el.style.display = 'block';
+      skelGrid.style.display = 'grid';
+      // build skeletons
+      skelGrid.innerHTML = Array.from({length: 6}, () => `
+        <div class="skeleton-card">
+          <div class="skel skel-num"></div>
+          <div class="skel skel-name"></div>
+          <div class="skel skel-badge"></div>
+          <div class="skel skel-line"></div>
+          <div class="skel skel-line short"></div>
+          <div class="skel-div"></div>
+          <div class="skel skel-reason"></div>
+        </div>`).join('');
+      let idx = 0;
+      el.textContent = LOADING_PHRASES[0];
+      phraseInterval = setInterval(() => {
+        idx = (idx + 1) % LOADING_PHRASES.length;
+        el.style.animation = 'none';
+        el.offsetHeight; // reflow
+        el.style.animation = '';
+        el.textContent = LOADING_PHRASES[idx];
+      }, 1800);
+      // scroll suave al skeleton
+      setTimeout(() => skelGrid.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+
+    function stopLoadingPhrases() {
+      clearInterval(phraseInterval);
+      $('loadingPhrase').style.display = 'none';
+      $('skeletonGrid').style.display  = 'none';
+    }
+
     function setLoading(loading) {
       generateBtn.disabled = loading;
       generateBtn.classList.toggle('loading', loading);
       generateBtn.querySelector('.label').textContent = loading ? 'Generando…' : '✦ Generar 10 nombres';
+      if (loading) startLoadingPhrases();
+      else         stopLoadingPhrases();
     }
     function showToast(msg) {
       toast.textContent = msg;
@@ -1603,8 +1863,8 @@ No incluyas texto adicional fuera del JSON.`;
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.9,
-        max_tokens: 1500,
+        temperature: 1.0,
+        max_tokens: 2000,
         response_format: { type: 'json_object' }
       };
 
@@ -1636,6 +1896,23 @@ No incluyas texto adicional fuera del JSON.`;
     }
 
     // ════════════════════════════════════════════════════════
+    // ORIGIN → CULTURE KEY (para el acento de color)
+    // ════════════════════════════════════════════════════════
+    function cultureKey(origen) {
+      const o = (origen || '').toLowerCase();
+      if (/jap[oó]n|japon[eé]s/.test(o))                  return 'japones';
+      if (/italia|italiano|italiana/.test(o))               return 'italiano';
+      if (/hebreo|hebrea|israel|jud[íi]/.test(o))           return 'hebreo';
+      if (/grieg|grecia|hel[eé]n/.test(o))                  return 'griego';
+      if (/persa|iran[íi]|farsi/.test(o))                   return 'persa';
+      if (/[áa]rabe|[áa]rabia|[íi]slam/.test(o))           return 'arabe';
+      if (/n[oó]rdic|viking|escandinav|norueg|suec|d[aá]n/.test(o)) return 'nordico';
+      if (/latin|espa[ñn]ol|hispano|castellano/.test(o))    return 'latino';
+      if (/celta|irland[eé]s|gal[eé]s|esoc[eé]s/.test(o))  return 'celta';
+      return '';
+    }
+
+    // ════════════════════════════════════════════════════════
     // RENDER RESULTS
     // ════════════════════════════════════════════════════════
     function renderResults(nombres) {
@@ -1644,11 +1921,14 @@ No incluyas texto adicional fuera del JSON.`;
         const card = document.createElement('article');
         card.className = 'card';
         card.style.animationDelay = `${i * 70}ms`;
+        const culture = cultureKey(n.origen);
+        if (culture) card.dataset.culture = culture;
         const isFav = isFavorite(n.nombre);
         card.innerHTML = `
           <div class="card-top">
             <span class="card-num">N.º ${String(i + 1).padStart(2, '0')}</span>
             <div class="card-actions">
+              <button class="icon-btn speak-btn" data-name="${escapeHtml(n.nombre)}" aria-label="Pronunciar" type="button">🔊</button>
               <button class="icon-btn fav-btn ${isFav ? 'faved' : ''}" data-name="${escapeHtml(n.nombre)}" data-idx="${i}" aria-label="Favorito" type="button">${isFav ? '♥' : '♡'}</button>
               <button class="icon-btn share-btn" data-idx="${i}" aria-label="Compartir" type="button">⎙</button>
             </div>
@@ -1661,6 +1941,7 @@ No incluyas texto adicional fuera del JSON.`;
         grid.appendChild(card);
       });
 
+      // Fav buttons
       grid.querySelectorAll('.fav-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1671,11 +1952,50 @@ No incluyas texto adicional fuera del JSON.`;
           btn.textContent = isFavNow ? '♥' : '♡';
         });
       });
+
+      // Share buttons
       grid.querySelectorAll('.share-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const idx = parseInt(btn.dataset.idx);
           shareName(lastResults[idx]);
+        });
+      });
+
+      // Speak buttons (speechSynthesis)
+      grid.querySelectorAll('.speak-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const name = btn.dataset.name;
+          if (!window.speechSynthesis) return showToast('Tu navegador no soporta síntesis de voz');
+          speechSynthesis.cancel();
+          const utt = new SpeechSynthesisUtterance(name);
+          utt.lang = 'es-ES';
+          utt.rate = 0.85;
+          utt.pitch = 1.1;
+          btn.classList.add('speaking');
+          utt.onend = () => btn.classList.remove('speaking');
+          utt.onerror = () => btn.classList.remove('speaking');
+          speechSynthesis.speak(utt);
+        });
+      });
+
+      // Tilt 3D
+      grid.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const cx = rect.left + rect.width  / 2;
+          const cy = rect.top  + rect.height / 2;
+          const dx = (e.clientX - cx) / (rect.width  / 2);
+          const dy = (e.clientY - cy) / (rect.height / 2);
+          card.classList.add('tilt-active');
+          card.style.transform = `perspective(700px) rotateY(${dx * 6}deg) rotateX(${-dy * 5}deg) translateY(-4px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.classList.remove('tilt-active');
+          card.classList.add('tilt-leave');
+          card.style.transform = '';
+          setTimeout(() => card.classList.remove('tilt-leave'), 400);
         });
       });
 
@@ -1855,8 +2175,35 @@ No incluyas texto adicional fuera del JSON.`;
     });
 
     // ════════════════════════════════════════════════════════
+    // DARK MODE
+    // ════════════════════════════════════════════════════════
+    const themeBtn   = $('themeBtn');
+    const themeIcon  = $('themeIcon');
+    const themeLabel = $('themeLabel');
+    const THEME_KEY  = 'lumen_theme';
+
+    function applyTheme(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      themeIcon.textContent  = dark ? '☀' : '☾';
+      themeLabel.textContent = dark ? 'Claro' : 'Oscuro';
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(saved ? saved === 'dark' : prefersDark);
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+      applyTheme(isDark);
+    });
+
+    // ════════════════════════════════════════════════════════
     // INIT
     // ════════════════════════════════════════════════════════
+    initTheme();
     loadKey();
     saveFavs();
   </script>
