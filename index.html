@@ -515,7 +515,15 @@
     textarea:focus {
       border-color: var(--coral-deep);
       box-shadow: 0 0 0 4px rgba(194, 80, 52, .08);
-      background: white;
+      background: var(--paper);
+    }
+    html.dark textarea {
+      background: #2a2118;
+      color: var(--ink);
+    }
+    html.dark textarea:focus {
+      background: #32261c;
+      border-color: var(--coral);
     }
     textarea::placeholder { color: var(--ink-mute); }
 
@@ -1092,7 +1100,15 @@
     .parent-input:focus {
       border-color: var(--coral-deep);
       box-shadow: 0 0 0 4px rgba(194, 80, 52, .08);
-      background: white;
+      background: var(--paper);
+    }
+    html.dark .parent-input {
+      background: #2a2118;
+      color: var(--ink);
+    }
+    html.dark .parent-input:focus {
+      background: #32261c;
+      border-color: var(--coral);
     }
     .parent-join {
       font-family: var(--font-display);
@@ -1120,7 +1136,15 @@
     .combine-extra:focus {
       border-color: var(--coral-deep);
       box-shadow: 0 0 0 4px rgba(194, 80, 52, .08);
-      background: white;
+      background: var(--paper);
+    }
+    html.dark .combine-extra {
+      background: #2a2118;
+      color: var(--ink);
+    }
+    html.dark .combine-extra:focus {
+      background: #32261c;
+      border-color: var(--coral);
     }
 
     .combine-hint {
