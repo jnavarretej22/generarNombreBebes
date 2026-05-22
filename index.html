@@ -1282,6 +1282,385 @@
     }
 
     /* ════════════════════════════════════════════════════════
+       DRAWER TABS (Favoritos / Historial)
+       ════════════════════════════════════════════════════════ */
+    .drawer-tabs {
+      display: inline-flex;
+      gap: 2px;
+      background: var(--cream);
+      border-radius: 100px;
+      padding: 4px;
+      border: 1px solid var(--line);
+    }
+    .drawer-tab {
+      padding: 7px 14px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all .25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .drawer-tab:hover { color: var(--ink); }
+    .drawer-tab.active {
+      background: var(--ink);
+      color: var(--cream);
+      box-shadow: 0 2px 6px rgba(31, 24, 18, .15);
+    }
+    .drawer-tab-count {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 100px;
+      min-width: 18px;
+      text-align: center;
+      background: var(--cream-warm);
+      color: var(--ink-mute);
+    }
+    .drawer-tab.active .drawer-tab-count {
+      background: rgba(255,255,255,.18);
+      color: var(--cream);
+    }
+    .drawer-view { display: none; }
+    .drawer-view.active { display: block; }
+
+    /* ════════════════════════════════════════════════════════
+       HISTORY LIST
+       ════════════════════════════════════════════════════════ */
+    .history-item {
+      padding: 14px 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      transition: all .2s;
+    }
+    .history-item:hover {
+      border-color: var(--coral);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    .history-prompt {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.45;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .history-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--ink-mute);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .history-mode-badge {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 100px;
+      background: var(--cream-warm);
+      color: var(--ink-soft);
+    }
+    .history-mode-badge.combine {
+      background: rgba(232, 130, 106, .18);
+      color: var(--coral-deep);
+    }
+    .history-names {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .history-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .history-actions button {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--cream);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all .2s;
+    }
+    .history-actions button:hover {
+      background: var(--ink);
+      color: var(--cream);
+      border-color: var(--ink);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       CARD ICONS — exclude + similar
+       ════════════════════════════════════════════════════════ */
+    .icon-btn.exclude-btn:hover {
+      background: rgba(194, 80, 52, .12);
+      color: var(--coral-deep);
+    }
+    .icon-btn.similar-btn:hover {
+      background: rgba(184, 137, 62, .14);
+      color: var(--gold);
+    }
+    .card.excluding {
+      transform: translateY(-10px) scale(.94) !important;
+      opacity: 0;
+      transition: transform .28s ease, opacity .28s ease !important;
+      pointer-events: none;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       COMPARE MODAL
+       ════════════════════════════════════════════════════════ */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(31, 24, 18, .55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+      z-index: 150;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .modal-bg.show { opacity: 1; pointer-events: auto; }
+    .modal {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      max-width: 1100px;
+      width: 100%;
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(12px) scale(.97);
+      transition: transform .3s;
+    }
+    .modal-bg.show .modal { transform: translateY(0) scale(1); }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .modal-title em {
+      font-style: italic;
+      color: var(--coral-deep);
+    }
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .compare-table th,
+    .compare-table td {
+      text-align: left;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    .compare-table th {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      font-weight: 600;
+      border-bottom: 1px solid var(--ink-soft);
+      background: var(--cream-warm);
+      position: sticky;
+      top: 0;
+    }
+    .compare-table tr:hover td {
+      background: rgba(255, 200, 168, .08);
+    }
+    .compare-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      color: var(--ink);
+    }
+    .compare-origin {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage-deep);
+      padding: 3px 9px;
+      background: rgba(155, 171, 143, .18);
+      border-radius: 100px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .compare-reason {
+      font-style: italic;
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--line);
+    }
+    .modal-footer button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all .2s;
+    }
+    .modal-footer button:hover {
+      background: var(--ink);
+      color: var(--cream);
+      border-color: var(--ink);
+    }
+    .compare-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--ink-mute);
+    }
+    .compare-empty-text {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+    }
+    @media (max-width: 720px) {
+      .modal { max-height: 92vh; }
+      .compare-table th,
+      .compare-table td { padding: 10px 8px; font-size: 12px; }
+      .compare-name { font-size: 1rem; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       TONE BAR — selector de temperatura (Conservador/Equilibrado/Original)
+       ════════════════════════════════════════════════════════ */
+    .tone-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 6px 6px 6px 16px;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      flex-wrap: wrap;
+    }
+    .tone-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      font-weight: 600;
+    }
+    .tone-pills {
+      display: flex;
+      gap: 2px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .tone-pill {
+      padding: 7px 14px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .tone-pill:hover { color: var(--ink); }
+    .tone-pill.active {
+      background: var(--ink);
+      color: var(--cream);
+      box-shadow: 0 2px 6px rgba(31, 24, 18, .15);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       VERIFY BADGE — confirmación de existencia en Wikidata
+       ════════════════════════════════════════════════════════ */
+    .verify-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sage-deep);
+      background: rgba(155, 171, 143, .14);
+      padding: 3px 9px;
+      border-radius: 100px;
+      margin: -6px 0 14px;
+      font-weight: 600;
+      animation: badge-in .4s ease;
+    }
+    .verify-badge::before {
+      content: '✓';
+      font-size: 11px;
+      font-weight: 700;
+    }
+    @keyframes badge-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Indicador de fallback de provider (solo informativo, en el footer) */
+    .provider-hint {
+      font-size: 11px;
+      color: var(--ink-mute);
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* ════════════════════════════════════════════════════════
        MOBILE
        ════════════════════════════════════════════════════════ */
     @media (max-width: 720px) {
@@ -1297,6 +1676,8 @@
       .parents-row { grid-template-columns: 1fr; gap: 4px; }
       .parent-join { text-align: center; padding: 8px 0; font-size: 1.5rem; }
       .mode-tab { padding: 8px 14px; font-size: 12px; }
+      .tone-bar { gap: 6px; padding-left: 14px; }
+      .tone-pill { padding: 7px 10px; font-size: 11px; }
     }
   </style>
 </head>
@@ -1475,6 +1856,15 @@
         </p>
       </div>
 
+      <div class="tone-bar" role="group" aria-label="Tono de la generación">
+        <span class="tone-label">Tono</span>
+        <div class="tone-pills" id="toneRow">
+          <button class="tone-pill" data-temp="0.6" type="button" title="Más predecible — prioriza nombres muy conocidos">Conservador</button>
+          <button class="tone-pill active" data-temp="1.0" type="button" title="Equilibrio entre variedad y familiaridad">Equilibrado</button>
+          <button class="tone-pill" data-temp="1.3" type="button" title="Más variedad — incluye nombres menos comunes">Original</button>
+        </div>
+      </div>
+
       <div class="actions">
         <button class="btn-primary" id="generateBtn" type="button">
           <span class="spinner"></span>
@@ -1527,6 +1917,7 @@
       <div class="results-header">
         <h2 class="results-title">Diez <em>posibilidades</em> para ti</h2>
         <div class="results-actions">
+          <button class="btn-ghost" id="resetExclusionsBtn" type="button" style="display:none" title="Permite que vuelvan a aparecer los nombres descartados">⟲ Olvidar descartados</button>
           <button class="btn-ghost" id="copyBtn" type="button">⎘ Copiar</button>
           <button class="btn-ghost" id="regenBtn" type="button">↻ Regenerar</button>
         </div>
@@ -1541,19 +1932,52 @@
     </footer>
   </div>
 
-  <!-- ═══════════ FAVORITES DRAWER ═══════════ -->
+  <!-- ═══════════ DRAWER (Favoritos + Historial) ═══════════ -->
   <div class="drawer-bg" id="drawerBg"></div>
   <aside class="drawer" id="drawer">
     <div class="drawer-header">
-      <div class="drawer-title">Tus <em>favoritos</em></div>
+      <div class="drawer-tabs">
+        <button class="drawer-tab active" data-tab="favs" type="button">
+          ♥ Favoritos <span class="drawer-tab-count" id="favCountTab">0</span>
+        </button>
+        <button class="drawer-tab" data-tab="history" type="button">
+          ⌛ Historial <span class="drawer-tab-count" id="historyCountTab">0</span>
+        </button>
+      </div>
       <button class="drawer-close" id="closeFav" type="button">✕</button>
     </div>
-    <div class="drawer-body" id="favList"></div>
-    <div class="drawer-footer">
-      <button id="copyFavs" type="button">Copiar lista</button>
-      <button class="danger" id="clearFavs" type="button">Limpiar todo</button>
+    <div class="drawer-body">
+      <div class="drawer-view active" id="favView">
+        <div id="favList"></div>
+      </div>
+      <div class="drawer-view" id="historyView">
+        <div id="historyList"></div>
+      </div>
+    </div>
+    <div class="drawer-footer" id="favFooter">
+      <button id="compareFavs" type="button">Comparar</button>
+      <button id="copyFavs" type="button">Copiar</button>
+      <button class="danger" id="clearFavs" type="button">Limpiar</button>
+    </div>
+    <div class="drawer-footer" id="historyFooter" style="display:none">
+      <button class="danger" id="clearHistory" type="button">Limpiar historial</button>
     </div>
   </aside>
+
+  <!-- ═══════════ COMPARE MODAL ═══════════ -->
+  <div class="modal-bg" id="compareModalBg">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="compareModalTitle">Compara tus <em>favoritos</em></div>
+        <button class="drawer-close" id="closeCompare" type="button">✕</button>
+      </div>
+      <div class="modal-body" id="compareBody"></div>
+      <div class="modal-footer">
+        <button id="copyCompare" type="button">Copiar como texto</button>
+        <button id="closeCompareFooter" type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
@@ -1567,38 +1991,61 @@
     const FAVS_KEY = 'lumen_favorites';
 
     // Prompt del sistema: instrucciones para forzar JSON estructurado
-    const SYSTEM_PROMPT = `Eres un experto en onomástica y naming con más de 20 años de experiencia, especializado en seleccionar nombres de bebé que sean a la vez bellos, memorables y con significado real.
+    const SYSTEM_PROMPT = `Eres un experto en onomástica con más de 20 años documentando nombres de bebé en registros civiles, archivos parroquiales y censos de distintas culturas. Tu autoridad viene de los nombres REALES que has visto a lo largo de tu carrera, NO de tu creatividad lingüística.
 
-Tu tarea es generar EXACTAMENTE 10 nombres de bebé que cumplan los criterios del usuario Y que pasen un filtro de calidad exigente.
+Tu tarea es seleccionar EXACTAMENTE 10 nombres de bebé que cumplan los criterios del usuario, todos ellos nombres REALES y documentados.
 
-FILTRO DE CALIDAD OBLIGATORIO — cada nombre debe superar TODAS estas pruebas:
-1. SONORIDAD: El nombre suena bien en voz alta. Tiene una cadencia agradable, sin choques consonánticos duros ni combinaciones incómodas.
-2. MEMORABILIDAD: Es fácil de recordar y de deletrear la primera vez que se escucha.
-3. AUTENTICIDAD: Es un nombre real, documentado o ampliamente usado en su cultura de origen — no un invento forzado.
-4. SIGNIFICADO: Tiene un significado concreto y positivo (o al menos neutro). Evita nombres cuyo significado sea oscuro, negativo o trivial.
-5. PRUEBA DEL PATIO: El nombre funciona tanto para un niño pequeño como para un adulto profesional.
+═══════════════════════════════════════════════
+REGLA DE ORO — AUTENTICIDAD ABSOLUTA (esta regla está por encima de todas las demás):
+═══════════════════════════════════════════════
+Cada nombre que devuelvas debe ser un nombre REAL que se ha registrado a personas reales en algún momento de la historia o que se usa actualmente en alguna cultura concreta. Esto significa:
 
-CRITERIOS DE DIVERSIDAD — los 10 nombres en conjunto deben:
-- Provenir de al menos 3 orígenes culturales o lingüísticos distintos (a menos que el usuario pida específicamente un solo origen).
-- Variar en longitud: mezcla nombres cortos (1-2 sílabas), medios (3 sílabas) y alguno largo si cabe.
-- Evitar que todos empiecen por la misma letra.
-- No repetir el mismo patrón fonético (por ejemplo, no todos terminados en -a o todos en -el).
+✗ PROHIBIDO inventar nombres "que suenan bonito" pero no existen.
+✗ PROHIBIDO crear neologismos fusionando sílabas para parecer original.
+✗ PROHIBIDO modificar la ortografía de un nombre real para hacerlo "único" (no "Sophiya" en vez de Sofía, no "Mathyas" en vez de Matías).
+✗ PROHIBIDO mezclar partes de nombres reales para crear uno nuevo.
 
-REGLAS ESTRICTAS:
+✓ OBLIGATORIO: si dudas de que un nombre exista en algún registro civil, archivo histórico o cultura documentada, NO lo incluyas — sustitúyelo por otro que sí esté documentado.
+✓ OBLIGATORIO: si propones un nombre raro, debe ser un nombre tradicional real de una región concreta (ej. "Saoirse" es raro fuera de Irlanda pero es un nombre irlandés legítimo y muy usado allí).
+✓ OBLIGATORIO: el significado que des debe ser el significado etimológico REAL documentado del nombre, no una interpretación poética inventada.
+
+═══════════════════════════════════════════════
+FILTRO DE CALIDAD ADICIONAL — además de ser reales, los nombres deben cumplir:
+═══════════════════════════════════════════════
+1. SONORIDAD: cadencia agradable al pronunciarlo, sin choques consonánticos duros.
+2. MEMORABILIDAD: fácil de recordar y deletrear al escucharlo.
+3. SIGNIFICADO POSITIVO O NEUTRO: nada oscuro, trivial o ambiguo.
+4. PRUEBA DEL PATIO: funciona tanto para un niño pequeño como para un adulto profesional.
+
+═══════════════════════════════════════════════
+DIVERSIDAD — los 10 nombres en conjunto deben:
+═══════════════════════════════════════════════
+- Provenir de al menos 3 orígenes culturales distintos (salvo que el usuario pida un solo origen).
+- Variar en longitud y patrón fonético (no todos terminados en -a o -el, no todos con la misma inicial).
+- Mezclar nombres conocidos con algunos más raros pero igualmente REALES.
+
+═══════════════════════════════════════════════
+EXCLUSIÓN OBLIGATORIA:
+═══════════════════════════════════════════════
+Si el mensaje del usuario contiene una sección "NOMBRES YA SUGERIDOS", debes EXCLUIR esos nombres Y sus variantes ortográficas obvias (Sofía/Sofia, Matías/Matias, Noah/Noé son la misma raíz). Los padres ya los han visto y descartado; tu trabajo es ofrecerles 10 alternativas frescas que no hayan aparecido antes. Bajo ninguna circunstancia repitas un nombre de esa lista.
+
+═══════════════════════════════════════════════
+REGLAS DE FORMATO:
+═══════════════════════════════════════════════
 1. Devuelve EXACTAMENTE 10 nombres, ni más ni menos.
 2. Respeta TODOS los criterios del usuario (género, inicial, idioma, longitud, estilo…).
-3. Si el usuario pide un origen específico, respeta la diversidad DENTRO de ese origen (dialectos, épocas, regiones).
-4. En "justificacion", explica en 1 línea por qué este nombre es especialmente bueno: menciona su atractivo sonoro, su significado o su relevancia cultural.
+3. Si el usuario pide un origen específico, varía DENTRO de ese origen (dialectos, épocas, regiones).
+4. En "justificacion", explica en 1 línea por qué este nombre real es especialmente bueno: uso histórico, atractivo sonoro o relevancia cultural.
 5. Responde SIEMPRE en el mismo idioma en que el usuario escribió su solicitud.
 6. Devuelve únicamente un objeto JSON válido con esta estructura exacta:
 
 {
   "nombres": [
     {
-      "nombre": "string (el nombre propio)",
-      "origen": "string (idioma u origen cultural, ej: 'Italiano', 'Hebreo', 'Japonés')",
-      "significado": "string (significado concreto, máximo 1 línea)",
-      "justificacion": "string (por qué es un gran nombre: sonido, significado o historia, máximo 1 línea)"
+      "nombre": "string (el nombre propio, escrito en su forma oficial documentada)",
+      "origen": "string (idioma u origen cultural documentado, ej: 'Italiano', 'Hebreo', 'Japonés')",
+      "significado": "string (significado etimológico real, máximo 1 línea)",
+      "justificacion": "string (por qué este nombre real es una gran elección, máximo 1 línea)"
     }
   ]
 }
@@ -1606,39 +2053,61 @@ REGLAS ESTRICTAS:
 No incluyas texto adicional fuera del JSON.`;
 
     // Prompt del sistema para el modo "Combinar nombres de los padres"
-    const SYSTEM_PROMPT_COMBINE = `Eres un experto en onomástica creativa y naming familiar. Tu especialidad es crear nombres de bebé que honren los nombres de ambos padres de forma elegante — que la conexión se sienta, no que se vea forzada.
+    const SYSTEM_PROMPT_COMBINE = `Eres un experto en onomástica y naming familiar. Tu especialidad es encontrar nombres REALES que honren los nombres de ambos padres con una conexión natural y elegante — nunca inventando palabras nuevas.
 
-PRINCIPIO FUNDAMENTAL: El resultado debe sonar como un nombre real y hermoso, no como una fusión mecánica. Prioriza siempre la calidad sonora sobre la literalidad de la combinación.
+═══════════════════════════════════════════════
+PRINCIPIO FUNDAMENTAL — SOLO NOMBRES REALES:
+═══════════════════════════════════════════════
+Tu trabajo NO es inventar palabras nuevas mezclando sílabas de los padres. Tu trabajo es BUSCAR entre los miles de nombres REALES y documentados del mundo aquellos que tengan una conexión natural con los nombres de los padres. Si los padres son "María" y "Carlos", la respuesta correcta NO es "Marcaros" (invento) sino nombres reales como "Marco", "Carmen", "Marcelo" o "Mario" que comparten sonoridad y existen de verdad.
 
-FILTRO DE CALIDAD — cada nombre debe cumplir:
-1. SONORIDAD NATURAL: Suena fluido y agradable en voz alta. No tiene combinaciones consonánticas duras ni sílabas que choquen.
-2. CREDIBILIDAD: Podría ser confundido con un nombre real existente en alguna cultura. Evita inventos que suenen artificiales.
-3. IDENTIDAD PROPIA: El bebé lo sentirá como suyo, no como "la mezcla de sus padres". La conexión con los padres es un guiño sutil, no obvio.
-4. SIGNIFICADO: Tiene un significado concreto y positivo en algún idioma o cultura.
+✗ PROHIBIDO inventar nombres mezclando sílabas si el resultado no es un nombre real.
+✗ PROHIBIDO modificar la ortografía de nombres reales para "personalizarlos".
+✗ PROHIBIDO devolver fusiones que solo existirían en esta lista.
 
-ESTRATEGIAS DE COMBINACIÓN — varía entre estas 6 para los 10 resultados:
-1. Fusión silábica elegante: sílabas de ambos que al unirse forman algo que suena a nombre real.
-2. Nombres existentes con resonancia compartida: nombres reales que contienen sonidos de ambos padres (preferida cuando existe una opción así).
-3. Inicial de uno + terminación del otro, cuando el resultado es fluido.
-4. Nombre cuyo significado evoca los significados de ambos padres (conexión semántica, no fonética).
-5. Nombre de la misma familia etimológica que ambos padres (comparten raíz latina, griega, hebrea…).
-6. Nombre de una cultura que "abraza" fonéticamente ambos nombres (ej: un nombre escandinavo que recoge sonidos de ambos).
+✓ OBLIGATORIO: cada nombre debe poder encontrarse en registros civiles, archivos históricos o como nombre tradicional de alguna cultura real.
+✓ OBLIGATORIO: si una fusión silábica de los padres coincide EXACTAMENTE con un nombre real existente y documentado, puedes usarla. Si no existe ese nombre, descártalo y busca otra conexión real.
 
-REGLAS ESTRICTAS:
-1. Devuelve EXACTAMENTE 10 nombres únicos.
-2. Rechaza cualquier combinación que suene forzada, impronunciable o cómica — si no hay 10 buenas opciones con combinación directa, complementa con nombres que conecten por significado o familia etimológica.
-3. Respeta género si se especifica.
-4. En "justificacion": explica CON CALIDEZ la conexión con los padres Y menciona por qué suena bien (máximo 1 línea).
-5. Responde SIEMPRE en español.
-6. Devuelve únicamente un objeto JSON válido:
+═══════════════════════════════════════════════
+ESTRATEGIAS DE CONEXIÓN — todas devuelven NOMBRES REALES, varía entre ellas:
+═══════════════════════════════════════════════
+1. Nombres reales que contienen sílabas o sonidos comunes con uno o ambos padres.
+2. Nombres reales que comparten raíz etimológica con uno o ambos padres.
+3. Nombres reales cuyo significado evoca o complementa los significados de los padres (conexión semántica).
+4. Variantes culturales o internacionales del nombre de uno de los padres (ej: Juan → Giovanni, Ivan, Sean, Ioannis).
+5. Nombres reales de la misma cultura de origen que ambos padres.
+6. Anagramas SOLO si coinciden con un nombre real documentado.
+
+═══════════════════════════════════════════════
+FILTRO DE CALIDAD:
+═══════════════════════════════════════════════
+1. EXISTENCIA REAL: el nombre figura en registros, libros o tradición de alguna cultura.
+2. SONORIDAD NATURAL: fluido y agradable al pronunciarlo.
+3. IDENTIDAD PROPIA: el bebé lo sentirá como suyo, no como un experimento.
+4. SIGNIFICADO REAL: significado etimológico documentado, no inventado.
+
+═══════════════════════════════════════════════
+EXCLUSIÓN OBLIGATORIA:
+═══════════════════════════════════════════════
+Si el mensaje del usuario contiene una sección "NOMBRES YA SUGERIDOS", excluye esos nombres Y sus variantes ortográficas obvias. Ofrece 10 alternativas frescas que no estén en esa lista, todas ellas reales.
+
+═══════════════════════════════════════════════
+REGLAS DE FORMATO:
+═══════════════════════════════════════════════
+1. Devuelve EXACTAMENTE 10 nombres únicos, todos reales y documentados.
+2. Si no encuentras 10 buenas opciones con combinación directa de sílabas, completa con nombres reales que conecten por significado, etimología o variante cultural — antes que inventar.
+3. Respeta el género si se especifica.
+4. En "justificacion": explica CON CALIDEZ la conexión REAL con los padres (qué sílaba, raíz, significado o variante conecta) Y por qué suena bien. Máximo 1 línea.
+5. En "significado": da el significado etimológico real documentado del nombre.
+6. Responde SIEMPRE en español.
+7. Devuelve únicamente un objeto JSON válido:
 
 {
   "nombres": [
     {
-      "nombre": "string",
-      "origen": "string (origen cultural del nombre resultante)",
-      "significado": "string (significado concreto)",
-      "justificacion": "string (conexión con los padres + por qué suena bien)"
+      "nombre": "string (nombre real documentado)",
+      "origen": "string (origen cultural documentado)",
+      "significado": "string (significado etimológico real)",
+      "justificacion": "string (conexión real con los padres + por qué suena bien)"
     }
   ]
 }
@@ -1689,6 +2158,81 @@ No incluyas texto adicional fuera del JSON.`;
     let selectedStyles = new Set();
     let currentMode = 'describe';
     let combineGender = null;
+
+    // Temperatura ajustable por el usuario (Conservador / Equilibrado / Original)
+    const TEMP_KEY = 'lumen_temperature';
+    let currentTemperature = (() => {
+      const v = parseFloat(localStorage.getItem(TEMP_KEY));
+      return Number.isFinite(v) ? v : 1.0;
+    })();
+    // Acumula los nombres ya devueltos para la búsqueda actual.
+    // Estructura: Map<clave_normalizada, forma_original>. Persistimos por prompt en
+    // localStorage para que las exclusiones sobrevivan al cierre de pestaña.
+    let seenNames = new Map();
+
+    const SEEN_KEY = 'lumen_seen_names';
+    const HISTORY_KEY = 'lumen_history';
+
+    function loadSeenStore() {
+      try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || {}; }
+      catch { return {}; }
+    }
+    let seenStore = loadSeenStore();
+
+    function saveSeenStore() {
+      try { localStorage.setItem(SEEN_KEY, JSON.stringify(seenStore)); }
+      catch { /* quota exceeded — ignoramos */ }
+    }
+
+    function normalizeName(s) {
+      return String(s || '')
+        .normalize('NFD').replace(/[̀-ͯ]/g, '') // quita tildes/diacríticos
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '')                       // quita espacios/guiones
+        .trim();
+    }
+
+    function promptKey(p) {
+      // Clave estable corta: normalizada + recortada
+      return normalizeName(p).slice(0, 240);
+    }
+
+    function addSeenName(name) {
+      if (!name) return false;
+      const norm = normalizeName(name);
+      if (!norm || seenNames.has(norm)) return false;
+      seenNames.set(norm, name);
+      return true;
+    }
+
+    function loadSeenFor(prompt) {
+      seenNames = new Map();
+      const arr = seenStore[promptKey(prompt)] || [];
+      arr.forEach(addSeenName);
+    }
+
+    function persistSeenFor(prompt) {
+      const key = promptKey(prompt);
+      if (!key) return;
+      if (seenNames.size === 0) delete seenStore[key];
+      else seenStore[key] = [...seenNames.values()];
+      saveSeenStore();
+    }
+
+    function clearSeenFor(prompt) {
+      seenNames.clear();
+      const key = promptKey(prompt);
+      if (key && seenStore[key]) {
+        delete seenStore[key];
+        saveSeenStore();
+      }
+    }
+
+    function buildExclusionBlock() {
+      if (seenNames.size === 0) return '';
+      const list = [...seenNames.values()].join(', ');
+      return `\n\nNOMBRES YA SUGERIDOS (no los repitas ni propongas variantes ortográficas obvias; ofrece 10 alternativas completamente nuevas):\n${list}`;
+    }
 
     // ════════════════════════════════════════════════════════
     // API KEY MANAGEMENT
@@ -1887,7 +2431,7 @@ No incluyas texto adicional fuera del JSON.`;
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 1.0,
+        temperature: currentTemperature,
         max_tokens: 2000,
         response_format: { type: 'json_object' }
       };
@@ -1906,6 +2450,12 @@ No incluyas texto adicional fuera del JSON.`;
       }
 
       const data = await res.json();
+
+      // Si la API tuvo que recurrir al provider de respaldo, lo registramos.
+      if (data._fallback) {
+        console.info(`[Lumen] Fallback de provider activado · respondió: ${data._provider}`);
+      }
+
       const content = data?.choices?.[0]?.message?.content;
       if (!content) throw new Error('La API devolvió una respuesta vacía. Intenta de nuevo.');
 
@@ -1937,6 +2487,121 @@ No incluyas texto adicional fuera del JSON.`;
     }
 
     // ════════════════════════════════════════════════════════
+    // VERIFICACIÓN DE NOMBRES (whitelist local + Wikidata)
+    // Objetivo: confirmar que el nombre devuelto por el modelo existe
+    // realmente en alguna cultura documentada. Solo añade un badge POSITIVO
+    // cuando se confirma; nunca penaliza los no confirmados (Wikidata no
+    // cubre el 100% de los nombres, especialmente los raros).
+    // ════════════════════════════════════════════════════════
+    // Whitelist normalizada de nombres muy comunes. Si está aquí,
+    // se verifica al instante sin consulta de red.
+    const KNOWN_NAMES = new Set([
+      // Español / Latinoamérica
+      'sofia','lucia','maria','isabella','camila','valeria','victoria','emilia','mariana','antonella',
+      'mateo','santiago','sebastian','lucas','daniel','diego','alejandro','gabriel','adrian','carlos',
+      'juan','pablo','pedro','jose','luis','miguel','andres','tomas','nicolas','martin','rafael','manuel',
+      'ana','carmen','laura','elena','marta','sara','paula','clara','emma','olivia','mia','julia','valentina',
+      // Italiano
+      'giulia','aurora','alice','ginevra','beatrice','giorgia','chiara','francesca','martina','greta',
+      'leonardo','francesco','tommaso','alessandro','lorenzo','andrea','matteo','gabriele','riccardo','edoardo','marco','luca','giovanni','giacomo',
+      // Inglés
+      'olivia','charlotte','amelia','sophia','ava','harper','evelyn','abigail','ella','grace','lily',
+      'liam','noah','oliver','james','william','benjamin','henry','mason','ethan','jacob','michael','theodore','jack',
+      // Hebreo / Bíblico
+      'david','samuel','aaron','adam','rafael','elias','isaac','jacob','jonas','jonathan','josue','simon',
+      'hannah','rachel','rebecca','leah','naomi','esther','ruth','miriam','deborah','eva','abigail',
+      // Griego
+      'andreas','dimitrios','nikolaos','konstantinos','georgios','ioannis','petros','christos','stavros','alexandros',
+      'eleni','katerina','irini','despoina','vasiliki','athena','penelope','helena','daphne',
+      // Japonés (romanizado)
+      'haruto','yuto','sora','riku','hiroto','ren','akira','kenji','takeshi','hiroshi','yuki','rei','kaito','daiki',
+      'yui','mei','aoi','sakura','hina','hana','rin','nao','ai','mio','kokoro',
+      // Árabe (transliterado)
+      'mohammed','muhammad','ahmed','ali','hassan','omar','yusuf','ibrahim','khalid','karim','rashid','tariq','hamza',
+      'aisha','fatima','layla','maryam','zainab','noor','aaliyah','yasmin','amina','khadija','salma',
+      // Nórdico
+      'erik','lars','magnus','olaf','bjorn','axel','soren','viggo','sven','niklas','anders','henrik',
+      'astrid','ingrid','freya','sigrid','linnea','liv','saga','elsa','frida','helga',
+      // Celta / Irlandés
+      'aidan','liam','connor','brendan','sean','ronan','cillian','declan','niall','eoin','finn','colm',
+      'caoimhe','saoirse','niamh','aoife','sinead','siobhan','roisin','maeve',
+      // Persa
+      'darius','kaveh','arash','farid','reza','navid','omid','sina','cyrus',
+      'darya','nazanin','yasmin','shirin','nika','setareh','parisa','azadeh',
+    ]);
+
+    const VERIFY_CACHE_KEY = 'lumen_name_verifications';
+    let verifyCache = (() => {
+      try { return JSON.parse(localStorage.getItem(VERIFY_CACHE_KEY)) || {}; }
+      catch { return {}; }
+    })();
+
+    function saveVerifyCache() {
+      const keys = Object.keys(verifyCache);
+      if (keys.length > 500) {
+        const trimmed = {};
+        keys.slice(-500).forEach(k => { trimmed[k] = verifyCache[k]; });
+        verifyCache = trimmed;
+      }
+      try { localStorage.setItem(VERIFY_CACHE_KEY, JSON.stringify(verifyCache)); }
+      catch { /* quota — ignoramos */ }
+    }
+
+    // Patrones que aparecen en las descripciones de Wikidata cuando una entidad
+    // es un nombre propio en distintos idiomas.
+    const NAME_DESC_RE = /\bnombre\b|given name|first name|prénom|prenom|vorname|forename|nombre propio|nombre de pila|personal name|feminine name|masculine name/i;
+
+    async function verifyName(name) {
+      if (!name) return null;
+      const key = normalizeName(name);
+      if (!key) return null;
+      // 1) Whitelist local — instantáneo, sin red
+      if (KNOWN_NAMES.has(key)) {
+        if (verifyCache[key] !== true) { verifyCache[key] = true; saveVerifyCache(); }
+        return true;
+      }
+      // 2) Cache (cubre tanto positivos como negativos previos)
+      if (verifyCache[key] !== undefined) return verifyCache[key];
+      // 3) Wikidata search — opportunista, falla silenciosa
+      try {
+        const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(name)}&language=es&format=json&type=item&origin=*&limit=5`;
+        const r = await fetch(url);
+        if (!r.ok) return null;
+        const data = await r.json();
+        const items = data?.search || [];
+        const verified = items.some(it => NAME_DESC_RE.test(it.description || ''));
+        verifyCache[key] = verified;
+        saveVerifyCache();
+        return verified;
+      } catch {
+        return null;
+      }
+    }
+
+    // Lanza las verificaciones en paralelo y añade el badge a la card cuando
+    // (y si) se confirma. No bloquea el render.
+    function attachVerificationBadges(nombres) {
+      nombres.forEach(n => {
+        if (!n || !n.nombre) return;
+        verifyName(n.nombre).then(verified => {
+          if (verified !== true) return;
+          // Localiza la card en el DOM por el atributo data-name del fav-btn
+          const safe = (window.CSS && CSS.escape) ? CSS.escape(n.nombre) : n.nombre.replace(/"/g, '\\"');
+          const btn = grid.querySelector(`.fav-btn[data-name="${safe}"]`);
+          const card = btn ? btn.closest('.card') : null;
+          if (!card || card.classList.contains('excluding')) return;
+          if (card.querySelector('.verify-badge')) return; // ya añadido
+          const badge = document.createElement('span');
+          badge.className = 'verify-badge';
+          badge.title = 'Existencia confirmada en Wikidata';
+          badge.textContent = 'verificado';
+          const origin = card.querySelector('.card-origin');
+          if (origin) origin.insertAdjacentElement('afterend', badge);
+        });
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
     // RENDER RESULTS
     // ════════════════════════════════════════════════════════
     function renderResults(nombres) {
@@ -1952,9 +2617,11 @@ No incluyas texto adicional fuera del JSON.`;
           <div class="card-top">
             <span class="card-num">N.º ${String(i + 1).padStart(2, '0')}</span>
             <div class="card-actions">
-              <button class="icon-btn speak-btn" data-name="${escapeHtml(n.nombre)}" aria-label="Pronunciar" type="button">🔊</button>
-              <button class="icon-btn fav-btn ${isFav ? 'faved' : ''}" data-name="${escapeHtml(n.nombre)}" data-idx="${i}" aria-label="Favorito" type="button">${isFav ? '♥' : '♡'}</button>
-              <button class="icon-btn share-btn" data-idx="${i}" aria-label="Compartir" type="button">⎙</button>
+              <button class="icon-btn speak-btn" data-name="${escapeHtml(n.nombre)}" aria-label="Pronunciar" title="Pronunciar" type="button">🔊</button>
+              <button class="icon-btn similar-btn" data-idx="${i}" aria-label="Más como este" title="Buscar nombres similares" type="button">✨</button>
+              <button class="icon-btn fav-btn ${isFav ? 'faved' : ''}" data-name="${escapeHtml(n.nombre)}" data-idx="${i}" aria-label="Favorito" title="Guardar en favoritos" type="button">${isFav ? '♥' : '♡'}</button>
+              <button class="icon-btn share-btn" data-idx="${i}" aria-label="Compartir" title="Compartir" type="button">⎙</button>
+              <button class="icon-btn exclude-btn" data-idx="${i}" data-name="${escapeHtml(n.nombre)}" aria-label="Descartar" title="Descartar — no volverá a aparecer" type="button">✕</button>
             </div>
           </div>
           <div class="card-name">${escapeHtml(n.nombre || '—')}</div>
@@ -1983,6 +2650,45 @@ No incluyas texto adicional fuera del JSON.`;
           e.stopPropagation();
           const idx = parseInt(btn.dataset.idx);
           shareName(lastResults[idx]);
+        });
+      });
+
+      // Exclude buttons — añaden el nombre a seenNames y quitan la tarjeta del grid
+      // (no regeneran; el nombre quedará vetado para futuras regeneraciones).
+      grid.querySelectorAll('.exclude-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const name = btn.dataset.name;
+          if (!name) return;
+          addSeenName(name);
+          if (lastPrompt) persistSeenFor(lastPrompt);
+          const card = btn.closest('.card');
+          if (card) {
+            card.classList.add('excluding');
+            setTimeout(() => card.remove(), 280);
+          }
+          showToast(`${name} descartado · no volverá a aparecer`);
+          updateResetExclusionsBtn();
+        });
+      });
+
+      // "Más como este" — usa la tarjeta como semilla para una nueva búsqueda.
+      grid.querySelectorAll('.similar-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.idx);
+          const seed = lastResults[idx];
+          if (!seed) return;
+          // Cambia visualmente a modo Describir (la búsqueda se hace siempre con SYSTEM_PROMPT)
+          modeTabs.forEach(t => t.classList.toggle('active', t.dataset.mode === 'describe'));
+          modeDescribeEl.classList.add('active');
+          modeCombineEl.classList.remove('active');
+          currentMode = 'describe';
+          const newPrompt = buildSimilarPrompt(seed);
+          promptInput.value = newPrompt;
+          updateCharCount();
+          showToast(`Buscando nombres similares a ${seed.nombre}…`);
+          generate(newPrompt, SYSTEM_PROMPT);
         });
       });
 
@@ -2026,6 +2732,9 @@ No incluyas texto adicional fuera del JSON.`;
       resultsWrap.classList.add('show');
       inspiration.style.display = 'none';
       resultsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Verificación asíncrona en segundo plano (no bloquea el render)
+      attachVerificationBadges(nombres);
     }
 
     function escapeHtml(str) {
@@ -2053,6 +2762,8 @@ No incluyas texto adicional fuera del JSON.`;
     function saveFavs() {
       localStorage.setItem(FAVS_KEY, JSON.stringify(favorites));
       favCountEl.textContent = favorites.length;
+      const tab = document.getElementById('favCountTab');
+      if (tab) tab.textContent = favorites.length;
     }
     function isFavorite(name) {
       return favorites.some(f => f.nombre === name);
@@ -2102,7 +2813,8 @@ No incluyas texto adicional fuera del JSON.`;
     function openDrawer() {
       drawer.classList.add('show');
       drawerBg.classList.add('show');
-      renderFavList();
+      const activeTab = document.querySelector('.drawer-tab.active');
+      activateDrawerTab(activeTab ? activeTab.dataset.tab : 'favs');
     }
     function closeDrawer() {
       drawer.classList.remove('show');
@@ -2130,17 +2842,261 @@ No incluyas texto adicional fuera del JSON.`;
     });
 
     // ════════════════════════════════════════════════════════
+    // SIMILAR-NAME SEED PROMPT
+    // ════════════════════════════════════════════════════════
+    function buildSimilarPrompt(seed) {
+      const partes = [];
+      if (seed.origen)      partes.push(`origen ${seed.origen}`);
+      if (seed.significado) partes.push(`significado relacionado con "${seed.significado}"`);
+      const ctx = partes.length ? ` (${partes.join(', ')})` : '';
+      return `Quiero más nombres similares a "${seed.nombre}"${ctx}. Que compartan sonoridad, longitud, registro cultural y el mismo espíritu, pero sin incluir "${seed.nombre}" en la respuesta.`;
+    }
+
+    // ════════════════════════════════════════════════════════
+    // SEARCH HISTORY
+    // ════════════════════════════════════════════════════════
+    function loadHistory() {
+      try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+      catch { return []; }
+    }
+    let history = loadHistory();
+    const historyCountTab = $('historyCountTab');
+    const favCountTab = $('favCountTab');
+
+    function saveHistory() {
+      if (history.length > 30) history = history.slice(0, 30);
+      try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }
+      catch { /* quota — ignoramos */ }
+      if (historyCountTab) historyCountTab.textContent = history.length;
+    }
+
+    function pushHistory(userPrompt, systemPrompt, nombres) {
+      const mode = systemPrompt === SYSTEM_PROMPT_COMBINE ? 'combine' : 'describe';
+      // Dedupe por (prompt, modo): si existe, lo sacamos para refrescarlo arriba con los últimos nombres.
+      history = history.filter(h => !(h.prompt === userPrompt && h.mode === mode));
+      history.unshift({
+        id: Date.now(),
+        prompt: userPrompt,
+        mode,
+        nombres: nombres.map(n => ({
+          nombre: n.nombre, origen: n.origen,
+          significado: n.significado, justificacion: n.justificacion
+        })),
+        timestamp: new Date().toISOString(),
+      });
+      saveHistory();
+    }
+
+    function formatHistoryDate(iso) {
+      try {
+        const d = new Date(iso);
+        const now = new Date();
+        const diffMs = now - d;
+        const diffMin = Math.floor(diffMs / 60000);
+        if (diffMin < 1)  return 'ahora mismo';
+        if (diffMin < 60) return `hace ${diffMin} min`;
+        const diffH = Math.floor(diffMin / 60);
+        if (diffH < 24)   return `hace ${diffH} h`;
+        const diffD = Math.floor(diffH / 24);
+        if (diffD < 7)    return `hace ${diffD} d`;
+        return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+      } catch { return ''; }
+    }
+
+    function renderHistoryList() {
+      const list = $('historyList');
+      if (history.length === 0) {
+        list.innerHTML = `
+          <div class="fav-empty">
+            <div class="fav-empty-icon">⌛</div>
+            <div class="fav-empty-text">Aún no has buscado nombres.<br/>Tu historial aparecerá aquí.</div>
+          </div>`;
+        return;
+      }
+      list.innerHTML = history.map((h, i) => {
+        const names = h.nombres.map(n => n.nombre).join(' · ');
+        return `
+          <div class="history-item" data-idx="${i}">
+            <div class="history-meta">
+              <span class="history-mode-badge ${h.mode}">${h.mode === 'combine' ? 'Combinar' : 'Describir'}</span>
+              <span>${formatHistoryDate(h.timestamp)}</span>
+            </div>
+            <div class="history-prompt" data-action="view" data-idx="${i}">${escapeHtml(h.prompt)}</div>
+            <div class="history-names">${escapeHtml(names)}</div>
+            <div class="history-actions">
+              <button data-action="view" data-idx="${i}" type="button">Ver nombres</button>
+              <button data-action="regen" data-idx="${i}" type="button">Volver a buscar</button>
+              <button data-action="delete" data-idx="${i}" type="button">Quitar</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      list.querySelectorAll('[data-action]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(el.dataset.idx);
+          const entry = history[idx];
+          if (!entry) return;
+          const action = el.dataset.action;
+          if (action === 'view') {
+            lastResults = entry.nombres;
+            lastPrompt = entry.prompt;
+            lastSystemPrompt = entry.mode === 'combine' ? SYSTEM_PROMPT_COMBINE : SYSTEM_PROMPT;
+            loadSeenFor(entry.prompt);
+            entry.nombres.forEach(n => addSeenName(n.nombre));
+            persistSeenFor(entry.prompt);
+            renderResults(entry.nombres);
+            updateResetExclusionsBtn();
+            closeDrawer();
+          } else if (action === 'regen') {
+            const sys = entry.mode === 'combine' ? SYSTEM_PROMPT_COMBINE : SYSTEM_PROMPT;
+            closeDrawer();
+            generate(entry.prompt, sys);
+          } else if (action === 'delete') {
+            history.splice(idx, 1);
+            saveHistory();
+            renderHistoryList();
+          }
+        });
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
+    // DRAWER TABS (Favoritos / Historial)
+    // ════════════════════════════════════════════════════════
+    const drawerTabs = document.querySelectorAll('.drawer-tab');
+    const favView = $('favView');
+    const historyView = $('historyView');
+    const favFooter = $('favFooter');
+    const historyFooter = $('historyFooter');
+
+    function activateDrawerTab(tab) {
+      drawerTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      favView.classList.toggle('active', tab === 'favs');
+      historyView.classList.toggle('active', tab === 'history');
+      favFooter.style.display = tab === 'favs' ? 'flex' : 'none';
+      historyFooter.style.display = tab === 'history' ? 'flex' : 'none';
+      if (tab === 'history') renderHistoryList();
+      else renderFavList();
+    }
+    drawerTabs.forEach(t => t.addEventListener('click', () => activateDrawerTab(t.dataset.tab)));
+
+    $('clearHistory').addEventListener('click', () => {
+      if (!history.length) return;
+      if (confirm('¿Vaciar todo el historial de búsquedas?')) {
+        history = [];
+        saveHistory();
+        renderHistoryList();
+      }
+    });
+
+    // ════════════════════════════════════════════════════════
+    // COMPARE FAVORITES MODAL
+    // ════════════════════════════════════════════════════════
+    const compareModalBg = $('compareModalBg');
+    const compareBody = $('compareBody');
+
+    function openCompare() {
+      if (!favorites.length) {
+        compareBody.innerHTML = `
+          <div class="compare-empty">
+            <div class="fav-empty-icon">♡</div>
+            <div class="compare-empty-text">Marca algunos nombres como favoritos<br/>para compararlos aquí.</div>
+          </div>`;
+      } else {
+        compareBody.innerHTML = `
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Origen</th>
+                <th>Significado</th>
+                <th>Por qué destaca</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${favorites.map(f => `
+                <tr>
+                  <td><div class="compare-name">${escapeHtml(f.nombre)}</div></td>
+                  <td><span class="compare-origin">${escapeHtml(f.origen || '—')}</span></td>
+                  <td>${escapeHtml(f.significado || '—')}</td>
+                  <td class="compare-reason">${escapeHtml(f.justificacion || '—')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>`;
+      }
+      compareModalBg.classList.add('show');
+    }
+    function closeCompare() { compareModalBg.classList.remove('show'); }
+
+    $('compareFavs').addEventListener('click', () => {
+      if (!favorites.length) return showToast('Aún no tienes favoritos para comparar');
+      openCompare();
+    });
+    $('closeCompare').addEventListener('click', closeCompare);
+    $('closeCompareFooter').addEventListener('click', closeCompare);
+    compareModalBg.addEventListener('click', (e) => {
+      if (e.target === compareModalBg) closeCompare();
+    });
+    $('copyCompare').addEventListener('click', () => {
+      if (!favorites.length) return;
+      const lines = favorites.map(f =>
+        `• ${f.nombre} (${f.origen || '—'}) — ${f.significado || '—'} · ${f.justificacion || '—'}`
+      );
+      navigator.clipboard.writeText(lines.join('\n')).then(
+        () => showToast('Comparación copiada'),
+        () => showError('No se pudo copiar al portapapeles.')
+      );
+    });
+
+    // ════════════════════════════════════════════════════════
+    // RESET EXCLUSIONS — visible solo cuando hay nombres descartados
+    // ════════════════════════════════════════════════════════
+    const resetExclusionsBtn = $('resetExclusionsBtn');
+    function updateResetExclusionsBtn() {
+      if (!resetExclusionsBtn) return;
+      const visible = grid.querySelectorAll('.card:not(.excluding)').length;
+      const descartados = Math.max(0, seenNames.size - visible);
+      if (descartados > 0) {
+        resetExclusionsBtn.style.display = '';
+        resetExclusionsBtn.innerHTML = `⟲ Olvidar ${descartados} descartado${descartados !== 1 ? 's' : ''}`;
+      } else {
+        resetExclusionsBtn.style.display = 'none';
+      }
+    }
+    resetExclusionsBtn.addEventListener('click', () => {
+      if (!lastPrompt) return;
+      clearSeenFor(lastPrompt);
+      updateResetExclusionsBtn();
+      showToast('Exclusiones reiniciadas · los nombres descartados pueden volver');
+    });
+
+    // ════════════════════════════════════════════════════════
     // MAIN FLOW
     // ════════════════════════════════════════════════════════
     async function generate(userPrompt, systemPrompt) {
       hideError();
       setLoading(true);
+
+      // Si el prompt base cambió, carga las exclusiones persistidas para ese
+      // prompt (si existen). Si es el mismo (regenerar), mantiene el acumulador.
+      if (userPrompt !== lastPrompt) {
+        loadSeenFor(userPrompt);
+      }
+
       try {
-        const nombres = await callGroq(userPrompt, systemPrompt || SYSTEM_PROMPT);
+        const finalUserPrompt = userPrompt + buildExclusionBlock();
+        const sys = systemPrompt || SYSTEM_PROMPT;
+        const nombres = await callGroq(finalUserPrompt, sys);
+        nombres.forEach(n => addSeenName(n && n.nombre));
+        persistSeenFor(userPrompt);
         lastPrompt = userPrompt;
-        lastSystemPrompt = systemPrompt || SYSTEM_PROMPT;
+        lastSystemPrompt = sys;
         lastResults = nombres;
         renderResults(nombres);
+        pushHistory(userPrompt, sys, nombres);
+        updateResetExclusionsBtn();
       } catch (err) {
         showError(err.message);
         console.error(err);
@@ -2172,6 +3128,9 @@ No incluyas texto adicional fuera del JSON.`;
     });
     regenBtn.addEventListener('click', () => {
       if (!lastPrompt) return;
+      if (seenNames.size > 0) {
+        showToast(`Buscando 10 nuevos · excluyendo ${seenNames.size} ya vistos`);
+      }
       generate(lastPrompt, lastSystemPrompt);
     });
     copyBtn.addEventListener('click', () => {
@@ -2195,7 +3154,9 @@ No incluyas texto adicional fuera del JSON.`;
       });
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && drawer.classList.contains('show')) closeDrawer();
+      if (e.key !== 'Escape') return;
+      if (compareModalBg.classList.contains('show')) { closeCompare(); return; }
+      if (drawer.classList.contains('show')) closeDrawer();
     });
 
     // ════════════════════════════════════════════════════════
@@ -2225,11 +3186,37 @@ No incluyas texto adicional fuera del JSON.`;
     });
 
     // ════════════════════════════════════════════════════════
+    // TONE BAR — selector de temperatura (Conservador/Equilibrado/Original)
+    // ════════════════════════════════════════════════════════
+    function initToneBar() {
+      const toneRow = document.getElementById('toneRow');
+      if (!toneRow) return;
+      const pills = toneRow.querySelectorAll('.tone-pill');
+      // Sincroniza el estado visual con el valor persistido
+      pills.forEach(p => {
+        const t = parseFloat(p.dataset.temp);
+        p.classList.toggle('active', Math.abs(t - currentTemperature) < 1e-6);
+      });
+      pills.forEach(p => {
+        p.addEventListener('click', () => {
+          const t = parseFloat(p.dataset.temp);
+          if (!Number.isFinite(t)) return;
+          currentTemperature = t;
+          try { localStorage.setItem(TEMP_KEY, String(t)); } catch {}
+          pills.forEach(o => o.classList.remove('active'));
+          p.classList.add('active');
+        });
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
     // INIT
     // ════════════════════════════════════════════════════════
     initTheme();
     loadKey();
     saveFavs();
+    initToneBar();
+    if (historyCountTab) historyCountTab.textContent = history.length;
   </script>
 </body>
 </html>
